@@ -1,0 +1,14 @@
+const String API_KEY_PREFIX = "api_key";
+const String LANGUAGE_PREFIX = "language";
+const String PAGE_PREFIX = "page";
+//const String pageQuery(page) => "page=$page";
+const String BASE_URL = "https://api.themoviedb.org/3/movie";
+const String API_KEY = "da3edcc5150b52bcf7206c64255e7c18";
+const String LANGUAGE_EN = "en-US";
+const String NOW_PLAYING_PATH = "/now_playing";
+const String POPULAR_PATH = "/popular";
+const String TOP_RATED_PATH = "/top_rated";
+const String SIMILAR_PATH = "/similar";
+const String LATEST_PATH = "/latest";
+const String REVIEWS_PATH = "/reviews";
+const String VIDEOS_PATH = "/videos";
