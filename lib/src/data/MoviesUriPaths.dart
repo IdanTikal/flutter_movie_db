@@ -12,3 +12,4 @@ const String SIMILAR_PATH = "/similar";
 const String LATEST_PATH = "/latest";
 const String REVIEWS_PATH = "/reviews";
 const String VIDEOS_PATH = "/videos";
+const String IMAGE_PATH_URL = "https://image.tmdb.org/t/p/w500";
