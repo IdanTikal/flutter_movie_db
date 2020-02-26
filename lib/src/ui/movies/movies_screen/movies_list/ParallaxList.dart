@@ -4,6 +4,7 @@ import 'package:flutter_movie_db/assets/Colors.dart';
 import 'package:flutter_movie_db/assets/Strings.dart';
 import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
+import 'package:flutter_movie_db/src/ui/movies/movies_screen/movies_list/MovieCard.dart';
 import 'package:parallax_image/parallax_image.dart';
 
 class ParallaxList extends StatefulWidget {
@@ -19,9 +20,14 @@ class _ParallaxListState extends State<ParallaxList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         title: Text(Strings.app_name),
         backgroundColor: primaryColor,
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+        ),
       ),
       body: StreamBuilder<List<MovieModel>>(
           stream: widget.listStream,
@@ -42,12 +48,9 @@ getListView(AsyncSnapshot<List<MovieModel>> snapshot) {
         if (index == snapshot.data.length - 5) {
 //          _loadMore();
         }
-        return cardView(snapshot.data[index]);
+        return MovieCard(snapshot.data[index]);
       },
-      separatorBuilder: (BuildContext context, int index) => const Divider(
-        color: Colors.redAccent,
-        thickness: 0.01,
-      ),
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   } else {
     return Center(
@@ -57,62 +60,4 @@ getListView(AsyncSnapshot<List<MovieModel>> snapshot) {
               fontWeight: FontWeight.bold, color: primaryColor, fontSize: 40)),
     );
   }
-}
-
-Widget cardView(MovieModel movieModel) {
-  print("CardView");
-  return Container(
-    decoration: new BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10),
-        ),
-    child: Column(children: [
-      Text(movieModel.title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontStyle: FontStyle.italic,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 20)),
-      Container(
-        height: 200,
-        width: double.infinity,
-        decoration: new BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Card(
-          color: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          clipBehavior: Clip.antiAlias,
-          elevation: 16,
-          child: ParallaxImage(
-            extent: 1,
-            image: CachedNetworkImageProvider(
-              "$IMAGE_PATH_URL${movieModel.posterPath}",
-              scale: 1,
-            ),
-            child: InkWell(onTap: () {
-              print('Card tapped.');
-            }),
-          ),
-        ),
-      )
-    ]),
-  );
-}
-
-Widget getGrid(List<MovieModel> list) {
-  return GridView(
-    padding: EdgeInsets.all(10),
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
-      childAspectRatio: 1,
-    ),
-    children: list.map((movieModel) => cardView(movieModel)).toList(),
-  );
 }
