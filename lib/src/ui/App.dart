@@ -10,7 +10,7 @@ import 'package:flutter_movie_db/assets/Strings.dart';
 import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/data/movies/MoviesRepository.dart';
-import 'package:flutter_movie_db/src/ui/movies/movies_screen/movies_list/ParallaxList.dart';
+import 'package:flutter_movie_db/src/ui/movies/movies_screen/movies_list/MoviesListView.dart';
 import 'package:parallax_image/parallax_image.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -73,7 +73,7 @@ class App extends StatelessWidget {
 //  }
   @override
   Widget build(BuildContext context) {
-    return ParallaxList(listObservable);
+    return MoviesListView(listStream: listObservable, direction: Axis.vertical,);
   }
 }
 

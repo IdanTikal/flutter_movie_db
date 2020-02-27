@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/ui/movies/movies_screen/movies_list/MovieCard.dart';
 
-class GridViewList extends StatefulWidget {
-  final Stream<List<MovieModel>> _observableList;
+class GridListView extends StatefulWidget {
+  final Stream<List<MovieModel>> observableList;
 
-  GridViewList(this._observableList);
+  GridListView({Key key, this.observableList}) : super(key: key);
 
   @override
-  _GridViewListState createState() => _GridViewListState();
+  _GridListViewState createState() => _GridListViewState();
 }
 
-class _GridViewListState extends State<GridViewList> {
+class _GridListViewState extends State<GridListView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MovieModel>>(
-        stream: widget._observableList,
+        stream: widget.observableList,
         builder: (context, snapshot) {
           return GridView(
             padding: EdgeInsets.all(10),
@@ -25,7 +25,7 @@ class _GridViewListState extends State<GridViewList> {
               mainAxisSpacing: 10,
               childAspectRatio: 1,
             ),
-            children: snapshot.data.map((movieModel) => MovieCard(movieModel)).toList(),
+            children: snapshot.data.map((movieModel) => MovieCard(movieModel: movieModel)).toList(),
           );
         });
   }
