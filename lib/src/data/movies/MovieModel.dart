@@ -1,3 +1,5 @@
+import '../MoviesUriPaths.dart';
+
 class MovieModel {
   double popularity;
   int voteCount;
@@ -27,6 +29,9 @@ class MovieModel {
         this.title,
         this.overview,
         this.releaseDate});
+
+  String get getPosterDownloadUrl => "$IMAGE_PATH_URL$posterPath";
+
 
   MovieModel.fromJson(Map<String, dynamic> json) {
     popularity = json['popularity'];

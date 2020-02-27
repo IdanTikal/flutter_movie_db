@@ -25,7 +25,7 @@ class _GridViewListState extends State<GridViewList> {
               mainAxisSpacing: 10,
               childAspectRatio: 1,
             ),
-            children: snapshot.data.map((movieModel) => MovieCard(movieModel)).toList(),
+            children: snapshot.data.map((movieModel) => MovieCard(movieModel: movieModel,)).toList(),
           );
         });
   }

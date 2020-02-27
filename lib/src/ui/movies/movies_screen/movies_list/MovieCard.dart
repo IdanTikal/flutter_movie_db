@@ -2,11 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
+import 'package:flutter_movie_db/src/ui/movies/details_screen/MovieDetails.dart';
+import 'package:flutter_movie_db/src/ui/movies/widgets/ImageHeroAnimation.dart';
 import 'package:parallax_image/parallax_image.dart';
 
 class MovieCard extends StatelessWidget {
-  final MovieModel _movieModel;
-  MovieCard(this._movieModel);
+  final MovieModel movieModel;
+  final VoidCallback onTap;
+
+  MovieCard({Key key, this.movieModel, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +21,13 @@ class MovieCard extends StatelessWidget {
       ),
       child: Column(children: [
         ListTile(
-
-          title: Text(_movieModel.title,
+          title: Text(
+            movieModel.title,
           ),
-          subtitle: Text(_movieModel.releaseDate,
+          subtitle: Text(movieModel.releaseDate,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25)),
+              style: TextStyle(color: Colors.white, fontSize: 25)),
         ),
-
         Container(
           height: 200,
           width: double.infinity,
@@ -41,17 +42,22 @@ class MovieCard extends StatelessWidget {
             ),
             clipBehavior: Clip.antiAlias,
             elevation: 16,
-            child: ParallaxImage(
-              extent: 1,
-              image: CachedNetworkImageProvider(
-                "$IMAGE_PATH_URL${_movieModel.posterPath}",
-              ),
-              child: InkWell(
-                enableFeedback: true,
-                onTap: () {
-                  print('Card tapped.');
-                }, ),
+            child: ImageHeroAnimation(
+              photo: movieModel.getPosterDownloadUrl,
+              width: double.infinity,
+              onTap: onTap,
             ),
+//            child: ParallaxImage(
+//              extent: 1,
+//              image: CachedNetworkImageProvider(
+//                "$IMAGE_PATH_URL${movieModel.posterPath}",
+//              ),
+//              child: InkWell(
+//                enableFeedback: true,
+//                onTap: () {
+//                  print('Card tapped.');
+//                }, ),
+//            ),
           ),
         )
       ]),
