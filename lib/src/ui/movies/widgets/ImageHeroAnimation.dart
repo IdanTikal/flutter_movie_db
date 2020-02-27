@@ -28,7 +28,8 @@ class _ImageHeroAnimationState extends State<ImageHeroAnimation> {
     return StreamBuilder<bool>(
       stream: widget.parallaxBehavior,
       builder: (context, snapshot) {
-        return snapshot.hasData && snapshot.data ? withParallax() : withoutParallax();
+        return withoutParallax();
+//        return snapshot.hasData && snapshot.data ? withParallax() : withoutParallax();
       },
     );
   }
@@ -73,7 +74,7 @@ class _ImageHeroAnimationState extends State<ImageHeroAnimation> {
           color: Colors.transparent,
           child: InkWell(
             onTap: onImageClicked,
-            child: CachedNetworkImage(imageUrl: widget.photo, fit: BoxFit.fitWidth,),
+            child: CachedNetworkImage(imageUrl: widget.photo, fit: BoxFit.fitWidth),
           ),
         ),
       ),

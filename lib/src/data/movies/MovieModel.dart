@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import '../MoviesUriPaths.dart';
 
 class MovieModel {
@@ -12,6 +14,7 @@ class MovieModel {
   String originalTitle;
   List<int> genreIds;
   String title;
+  double voteAverage;
   String overview;
   String releaseDate;
 
@@ -27,13 +30,17 @@ class MovieModel {
         this.originalTitle,
         this.genreIds,
         this.title,
+        this.voteAverage,
         this.overview,
         this.releaseDate});
 
   String get getPosterDownloadUrl => "$IMAGE_PATH_URL$posterPath";
 
-
   MovieModel.fromJson(Map<String, dynamic> json) {
+    print("XXXX: ${json['vote_average']}");
+    var va = json['vote_average'];
+    print("VA: $va");
+
     popularity = json['popularity'];
     voteCount = json['vote_count'];
     video = json['video'];
@@ -45,6 +52,7 @@ class MovieModel {
     originalTitle = json['original_title'];
     genreIds = json['genre_ids'].cast<int>();
     title = json['title'];
+    voteAverage = json['vote_average'].toDouble();
     overview = json['overview'];
     releaseDate = json['release_date'];
   }
@@ -62,6 +70,7 @@ class MovieModel {
     data['original_title'] = this.originalTitle;
     data['genre_ids'] = this.genreIds;
     data['title'] = this.title;
+    data['vote_average'] = this.voteAverage;
     data['overview'] = this.overview;
     data['release_date'] = this.releaseDate;
     return data;

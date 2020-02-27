@@ -4,6 +4,7 @@ import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/ui/movies/details_screen/MovieDetails.dart';
 import 'package:flutter_movie_db/src/ui/movies/widgets/ImageHeroAnimation.dart';
+import 'package:flutter_movie_db/src/ui/movies/widgets/TextHeroAnimation.dart';
 import 'package:parallax_image/parallax_image.dart';
 
 class MovieCard extends StatelessWidget {
@@ -21,12 +22,17 @@ class MovieCard extends StatelessWidget {
       ),
       child: Column(children: [
         ListTile(
-          title: Text(
-            movieModel.title,
+          onTap: onTap,
+          title: Text(movieModel.title,
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 25)
           ),
           subtitle: Text(movieModel.releaseDate,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 25)),
+              style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 20)),
         ),
         Container(
           height: 200,

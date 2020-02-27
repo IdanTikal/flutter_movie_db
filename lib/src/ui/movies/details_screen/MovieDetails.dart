@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/assets/Colors.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/ui/movies/widgets/ImageHeroAnimation.dart';
 
@@ -15,24 +16,33 @@ class MovieDetails extends StatefulWidget {
 class _MovieDetailsState extends State<MovieDetails> {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-        slivers: <Widget>[
+    return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
-        backgroundColor: Colors.transparent,
-        pinned: true,
-        expandedHeight: 250.0,
-        flexibleSpace: FlexibleSpaceBar(
-          background: ImageHeroAnimation(
-            photo: widget.photoUrl,
-          ),
-        ),
-      ),
+          backgroundColor: primaryColor,
+          expandedHeight: 250.0,
+          floating: true,
+          pinned: true,
+          snap: true,
+          flexibleSpace: FlexibleSpaceBar(
+            collapseMode: CollapseMode.parallax,
+//            centerTitle: true,
+            title: Text(
+              widget.movieModel.title,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            background: ImageHeroAnimation(
+              photo: widget.photoUrl,
+            ),
+          )),
       SliverFillRemaining(
         hasScrollBody: true,
         child: Column(
           children: <Widget>[
-            Container(
-              color: Colors.black,
+            Column(
+              children: <Widget>[],
             ),
           ],
         ),
