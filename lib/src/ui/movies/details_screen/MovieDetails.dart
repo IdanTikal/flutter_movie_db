@@ -1,13 +1,36 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
-import 'package:flutter_movie_db/src/ui/movies/details_screen/MovieDetailsBloc.dart';
+import 'package:flutter_movie_db/src/data/videos/VideoModel.dart';
+import 'package:flutter_movie_db/src/data/videos/VideosRepository.dart';
 import 'package:flutter_movie_db/src/ui/movies/widgets/ImageHeroAnimation.dart';
 import 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 
-class MovieDetails extends StatelessWidget {
+import 'MovieDetailsBloc.dart';
+
+class MovieDetails extends StatefulWidget {
   final MovieModel movieModel;
 
   MovieDetails({Key key, this.movieModel}) : super(key: key);
+
+  @override
+  _MovieDetailsState createState() => _MovieDetailsState();
+}
+
+class _MovieDetailsState extends State<MovieDetails> {
+  VideosRepository _repository = VideosRepository();
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  Future init() async {
+    List<VideoModel> videos =
+        await _repository.getMovieVideos(widget.movieModel.id);
+    print("VIDEOS: $videos");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +57,14 @@ class MovieDetails extends StatelessWidget {
         flexibleSpace: FlexibleSpaceBar(
           collapseMode: CollapseMode.parallax,
           title: Text(
-            movieModel.title,
+            widget.movieModel.title,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: Colors.white,
             ),
           ),
           background: ImageHeroAnimation(
-            photo: movieModel.getPosterDownloadUrl,
+            photo: widget.movieModel.getPosterDownloadUrl,
           ),
         ));
   }
@@ -57,17 +80,17 @@ class MovieDetails extends StatelessWidget {
       children: <Widget>[
         buildSectionHeader("Overview"),
         buildSectionBody(
-          movieModel.overview,
+          widget.movieModel.overview,
         ),
         buildSectionHeader("Overview"),
         buildSectionBody(
-          movieModel.overview,
+          widget.movieModel.overview,
         ),            buildSectionHeader("Overview"),
         buildSectionBody(
-          movieModel.overview,
+          widget.movieModel.overview,
         ),            buildSectionHeader("Overview"),
         buildSectionBody(
-          movieModel.overview,
+          widget.movieModel.overview,
         ),
       ],
     );

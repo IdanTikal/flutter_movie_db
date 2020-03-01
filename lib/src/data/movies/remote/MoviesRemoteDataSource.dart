@@ -6,23 +6,10 @@ import '../../MoviesUriPaths.dart';
 import '../MovieModel.dart';
 
 class MoviesRemoteDataSource implements RemoteMoviesDataSource{
-  final MoviesServiceApi _serviceApi = MoviesServiceApi();
+  final MoviesServiceApi _serviceApi;
   get _dio => _serviceApi.dio;
 
-//  }
-//
-//  getMoviesInTheatres() {
-//    return _dio.get(NOW_PLAYING_PATH,
-//        options: _serviceApi.cacheOptions());
-//  }
-//
-//
-//  getSimilarMoviesByMovieId(int id) {
-//    return _dio.get("$SIMILAR_PATH/$id",
-//        options: _serviceApi.cacheOptions());
-//  }
-//
-
+  MoviesRemoteDataSource(this._serviceApi);
 
   @override
   Future<MoviesResponse> getPopularMovies() async {
@@ -45,13 +32,13 @@ class MoviesRemoteDataSource implements RemoteMoviesDataSource{
 
   @override
   getMoviesInTheatres() {
-    // TODO: implement getMoviesInTheatres
-    return null;
+    return _dio.get(NOW_PLAYING_PATH,
+        options: _serviceApi.cacheOptions());
   }
   
   @override
-  getMovieVideoById(int id) {
-    // TODO: implement getMovieVideoById
-    return null;
+  getMovieVideoById(int movieId) {
+    return _dio.get(movieId,
+        options: _serviceApi.cacheOptions());
   }
 }

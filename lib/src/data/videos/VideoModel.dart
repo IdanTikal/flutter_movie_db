@@ -10,13 +10,13 @@ class VideoModel {
 
   VideoModel(
       {this.id,
-        this.iso6391,
-        this.iso31661,
-        this.key,
-        this.name,
-        this.site,
-        this.size,
-        this.type});
+      this.iso6391,
+      this.iso31661,
+      this.key,
+      this.name,
+      this.site,
+      this.size,
+      this.type});
 
   VideoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -39,6 +39,32 @@ class VideoModel {
     data['site'] = this.site;
     data['size'] = this.size;
     data['type'] = this.type;
+    return data;
+  }
+}
+
+class VideosResponse {
+  int id;
+  List<VideoModel> results;
+
+  VideosResponse({this.id, this.results});
+
+  VideosResponse.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    if (json['results'] != null) {
+      results = new List<VideoModel>();
+      json['results'].forEach((v) {
+        results.add(new VideoModel.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.results != null) {
+      data['results'] = this.results.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

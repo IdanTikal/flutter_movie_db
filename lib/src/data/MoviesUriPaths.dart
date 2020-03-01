@@ -13,3 +13,4 @@ const String LATEST_PATH = "/latest";
 const String REVIEWS_PATH = "/reviews";
 const String VIDEOS_PATH = "/videos";
 const String IMAGE_PATH_URL = "https://image.tmdb.org/t/p/w500";
+const String YOUTUBE_VIDEO_URL = "https://www.youtube.com/watch?v=";

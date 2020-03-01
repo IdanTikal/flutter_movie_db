@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_movie_db/src/data/MoviesServiceApi.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/data/movies/MoviesDataSource.dart';
@@ -7,7 +6,7 @@ import 'package:flutter_movie_db/src/data/movies/remote/MoviesRemoteDataSource.d
 import 'local/MoviesLocalDataSource.dart';
 
 class MoviesRepository implements RemoteMoviesDataSource, LocalMoviesDataSource{
-  MoviesRemoteDataSource _moviesRemoteDataSource = new MoviesRemoteDataSource();
+  MoviesRemoteDataSource _moviesRemoteDataSource = new MoviesRemoteDataSource(MoviesServiceApi());
   MoviesLocalDataSource _moviesLocalDataSource = new MoviesLocalDataSource();
 
   @override

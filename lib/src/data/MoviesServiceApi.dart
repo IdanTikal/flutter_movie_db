@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
-import 'package:flutter_movie_db/src/data/movies/MoviesDataSource.dart';
 import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 
 class MoviesServiceApi {
