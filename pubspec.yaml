@@ -39,6 +39,15 @@ dependencies:
   path: ^1.6.4
   #endregion
 
+#￿￿TODO: implement different bloc packages fpr best practice and performence check
+  #region BLOC PACKAGES
+#  bloc: ^3.0.0
+#  flutter_bloc: ^3.2.0
+  #endregion
+
+  #temporary fix for silverFillRemaining
+  sliver_fill_remaining_box_adapter: 0.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

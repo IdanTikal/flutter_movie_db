@@ -1,67 +1,108 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_db/assets/Colors.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
+import 'package:flutter_movie_db/src/ui/movies/details_screen/MovieDetailsBloc.dart';
 import 'package:flutter_movie_db/src/ui/movies/widgets/ImageHeroAnimation.dart';
+import 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 
-class MovieDetails extends StatefulWidget {
+class MovieDetails extends StatelessWidget {
   final MovieModel movieModel;
-  final String photoUrl;
 
-  MovieDetails({Key key, this.movieModel, this.photoUrl}) : super(key: key);
+  MovieDetails({Key key, this.movieModel}) : super(key: key);
 
-  @override
-  _MovieDetailsState createState() => _MovieDetailsState();
-}
-
-class _MovieDetailsState extends State<MovieDetails> {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: <Widget>[
-      SliverAppBar(
-          backgroundColor: primaryColor,
-          expandedHeight: 250.0,
-          floating: true,
-          pinned: true,
-          snap: true,
-          flexibleSpace: FlexibleSpaceBar(
-            collapseMode: CollapseMode.parallax,
-//            centerTitle: true,
-            title: Text(
-              widget.movieModel.title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.white,
-              ),
+    MovieDetailsBloc();
+    return WillPopScope(
+      onWillPop: () => widgetWillPop(),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: CustomScrollView(slivers: <Widget>[
+          buildSliverAppBar(),
+          buildSliverFillRemaining(),
+        ]),
+      ),
+    );
+  }
+
+  SliverAppBar buildSliverAppBar() {
+    return SliverAppBar(
+        backgroundColor: Colors.black.withOpacity(0.8),
+        expandedHeight: 250.0,
+//        floating: true,
+        pinned: true,
+//        snap: true,
+        flexibleSpace: FlexibleSpaceBar(
+          collapseMode: CollapseMode.parallax,
+          title: Text(
+            movieModel.title,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Colors.white,
             ),
-            background: ImageHeroAnimation(
-              photo: widget.photoUrl,
-            ),
-          )),
-      SliverFillRemaining(
-        hasScrollBody: true,
-        child: Column(
-          children: <Widget>[
-            Column(
-              children: <Widget>[],
-            ),
-          ],
+          ),
+          background: ImageHeroAnimation(
+            photo: movieModel.getPosterDownloadUrl,
+          ),
+        ));
+  }
+
+  Widget buildSliverFillRemaining() {
+    return SliverFillRemainingBoxAdapter(
+      child: buildRemainingView(),
+    );
+  }
+
+  Widget buildRemainingView() {
+    return Column(
+      children: <Widget>[
+        buildSectionHeader("Overview"),
+        buildSectionBody(
+          movieModel.overview,
+        ),
+        buildSectionHeader("Overview"),
+        buildSectionBody(
+          movieModel.overview,
+        ),            buildSectionHeader("Overview"),
+        buildSectionBody(
+          movieModel.overview,
+        ),            buildSectionHeader("Overview"),
+        buildSectionBody(
+          movieModel.overview,
+        ),
+      ],
+    );
+  }
+
+  Container buildSectionBody(String text) {
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        border: Border.all(color: Colors.white.withOpacity(0.8), width: 5),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+    );
+  }
+
+  Padding buildSectionHeader(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(color: Colors.white, fontSize: 20),
+          textAlign: TextAlign.left,
         ),
       ),
-    ]);
+    );
   }
-//  @override
-//  Widget build(BuildContext context) {
-//    return Column(
-//      children: <Widget>[
-//      ImageHeroAnimation(
-//        photo: widget.photoUrl,
-//        width: double.infinity,
-//      ),
-//      Container(
-//        height: ,
-//      )
-//    ],
-//
-//    );
-//  }
+
+  widgetWillPop() {
+    print("XXX: WillPopScope");
+    return Future.value(true);
+  }
 }

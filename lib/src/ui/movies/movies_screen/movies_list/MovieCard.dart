@@ -1,11 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
-import 'package:flutter_movie_db/src/ui/movies/details_screen/MovieDetails.dart';
 import 'package:flutter_movie_db/src/ui/movies/widgets/ImageHeroAnimation.dart';
-import 'package:flutter_movie_db/src/ui/movies/widgets/TextHeroAnimation.dart';
-import 'package:parallax_image/parallax_image.dart';
 
 class MovieCard extends StatelessWidget {
   final MovieModel movieModel;
@@ -50,7 +45,7 @@ class MovieCard extends StatelessWidget {
             elevation: 16,
             child: ImageHeroAnimation(
               photo: movieModel.getPosterDownloadUrl,
-              width: double.infinity,
+              width: 100,
               onTap: onTap,
             ),
 //            child: ParallaxImage(

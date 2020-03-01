@@ -37,10 +37,6 @@ class MovieModel {
   String get getPosterDownloadUrl => "$IMAGE_PATH_URL$posterPath";
 
   MovieModel.fromJson(Map<String, dynamic> json) {
-    print("XXXX: ${json['vote_average']}");
-    var va = json['vote_average'];
-    print("VA: $va");
-
     popularity = json['popularity'];
     voteCount = json['vote_count'];
     video = json['video'];
@@ -82,15 +78,15 @@ class MovieModel {
   }
 }
 
-class MovieResponse {
+class MoviesResponse {
   int page;
   int totalResults;
   int totalPages;
   List<MovieModel> results;
 
-  MovieResponse({this.page, this.totalResults, this.totalPages, this.results});
+  MoviesResponse({this.page, this.totalResults, this.totalPages, this.results});
 
-  MovieResponse.fromJson(Map<String, dynamic> json) {
+  MoviesResponse.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     totalResults = json['total_results'];
     totalPages = json['total_pages'];

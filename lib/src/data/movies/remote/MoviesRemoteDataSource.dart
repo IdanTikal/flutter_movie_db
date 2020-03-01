@@ -2,43 +2,56 @@ import 'package:dio/dio.dart';
 import 'package:flutter_movie_db/src/data/movies/MoviesDataSource.dart';
 import 'package:flutter_movie_db/src/data/MoviesServiceApi.dart';
 
+import '../../MoviesUriPaths.dart';
 import '../MovieModel.dart';
 
 class MoviesRemoteDataSource implements RemoteMoviesDataSource{
-  MoviesServiceApi _serviceApi;
+  final MoviesServiceApi _serviceApi = MoviesServiceApi();
+  get _dio => _serviceApi.dio;
 
-  MoviesRemoteDataSource(MoviesServiceApi serviceApi){
-    _serviceApi = serviceApi;
-  }
+//  }
+//
+//  getMoviesInTheatres() {
+//    return _dio.get(NOW_PLAYING_PATH,
+//        options: _serviceApi.cacheOptions());
+//  }
+//
+//
+//  getSimilarMoviesByMovieId(int id) {
+//    return _dio.get("$SIMILAR_PATH/$id",
+//        options: _serviceApi.cacheOptions());
+//  }
+//
 
-  @override
-  getLatestMovie() {
-    return _serviceApi.getLatestMovie();
-  }
-
-  @override
-  getMovieReviewsByMovieId(int id) {
-    return _serviceApi.getMovieReviewsByMovieId(id);
-  }
-
-  @override
-  getMovieVideoById(id) {
-    return _serviceApi.getMovieVideoById(id);
-  }
 
   @override
-  getMoviesInTheatres() {
-    return _serviceApi.getMoviesInTheatres();
-  }
-
-  @override
-  Future<MovieResponse> getPopularMovies() async {
-    Response response = await _serviceApi.getPopularMovies();
-    return new MovieResponse.fromJson(response.data);
+  Future<MoviesResponse> getPopularMovies() async {
+    Response response = await _dio.get(POPULAR_PATH,
+        options: _serviceApi.cacheOptions());
+    return new MoviesResponse.fromJson(response.data);
   }
 
   @override
   getSimilarMoviesByMovieId(int id) {
-    return _serviceApi.getSimilarMoviesByMovieId(id);
+    return _dio.get("$SIMILAR_PATH/$id",
+        options: _serviceApi.cacheOptions());
+  }
+
+  @override
+  getLatestMovie() {
+    return _dio.get(LATEST_PATH,
+        options: _serviceApi.cacheOptions());
+  }
+
+  @override
+  getMoviesInTheatres() {
+    // TODO: implement getMoviesInTheatres
+    return null;
+  }
+  
+  @override
+  getMovieVideoById(int id) {
+    // TODO: implement getMovieVideoById
+    return null;
   }
 }

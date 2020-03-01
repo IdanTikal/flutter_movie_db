@@ -2,21 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/ui/movies/movies_screen/movies_list/MovieCard.dart';
 
-class GridListView extends StatefulWidget {
-  final Stream<List<MovieModel>> observableList;
+class GridListView extends StatelessWidget {
+  final List<MovieModel> movies;
 
-  GridListView({Key key, this.observableList}) : super(key: key);
+  GridListView({Key key, this.movies}) : super(key: key);
 
-  @override
-  _GridListViewState createState() => _GridListViewState();
-}
-
-class _GridListViewState extends State<GridListView> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<MovieModel>>(
-        stream: widget.observableList,
-        builder: (context, snapshot) {
           return GridView(
             padding: EdgeInsets.all(10),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -25,8 +17,7 @@ class _GridListViewState extends State<GridListView> {
               mainAxisSpacing: 10,
               childAspectRatio: 1,
             ),
-            children: snapshot.data.map((movieModel) => MovieCard(movieModel: movieModel)).toList(),
+            children: movies.map((movieModel) => MovieCard(movieModel: movieModel)).toList(),
           );
-        });
   }
 }

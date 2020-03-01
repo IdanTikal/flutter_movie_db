@@ -3,10 +3,12 @@ import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter_movie_db/src/data/movies/MoviesDataSource.dart';
 import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 
-class MoviesServiceApi implements RemoteMoviesDataSource {
-  Dio _dio = _MoviesService()._dio;
-  //TODO: handle forceUpdate (forceRefresh: true)
-  Options _buildCacheOptions = buildCacheOptions(Duration(days: 1), maxStale: Duration(days: 7));
+class MoviesServiceApi {
+  get dio => _MoviesService()._dio;
+
+  Options cacheOptions(
+          {duration: Duration, maxDuration: Duration, forceFetch: bool}) =>
+      buildCacheOptions(Duration(days: 1), maxStale: Duration(days: 7));
 
   static final MoviesServiceApi _singleton = MoviesServiceApi._internal();
 
@@ -15,42 +17,6 @@ class MoviesServiceApi implements RemoteMoviesDataSource {
   }
 
   MoviesServiceApi._internal();
-
-  @override
-  getLatestMovie() {
-    return _dio.get(LATEST_PATH,
-        options: _buildCacheOptions);
-  }
-
-  @override
-  getMoviesInTheatres() {
-    return _dio.get(NOW_PLAYING_PATH,
-        options: _buildCacheOptions);
-  }
-
-  @override
-  getPopularMovies() {
-    return _dio.get(POPULAR_PATH,
-        options: _buildCacheOptions);
-  }
-
-  @override
-  getSimilarMoviesByMovieId(int id) {
-    return _dio.get("$SIMILAR_PATH/$id",
-        options: _buildCacheOptions);
-  }
-
-  @override
-  getMovieReviewsByMovieId(int id) {
-    return _dio.get("$REVIEWS_PATH/$id",
-        options: _buildCacheOptions);
-  }
-
-  @override
-  getMovieVideoById(int id) {
-    return _dio.get("$VIDEOS_PATH/$id",
-        options: _buildCacheOptions);
-  }
 }
 
 class _MoviesService {

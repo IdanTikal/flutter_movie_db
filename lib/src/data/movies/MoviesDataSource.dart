@@ -2,7 +2,6 @@ import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 
 abstract class MoviesDataSource{
   getMovieVideoById(int id);
-  getMovieReviewsByMovieId(int id);
 }
 
 abstract class RemoteMoviesDataSource implements MoviesDataSource{

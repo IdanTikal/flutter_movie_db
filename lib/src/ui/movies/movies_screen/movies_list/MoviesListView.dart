@@ -1,87 +1,69 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_db/assets/Colors.dart';
-import 'package:flutter_movie_db/assets/Strings.dart';
-import 'package:flutter_movie_db/src/data/MoviesUriPaths.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
-import 'package:flutter_movie_db/src/ui/movies/details_screen/MovieDetails.dart';
 import 'package:flutter_movie_db/src/ui/movies/movies_screen/movies_list/GridListView.dart';
 import 'package:flutter_movie_db/src/ui/movies/movies_screen/movies_list/MovieCard.dart';
-import 'package:parallax_image/parallax_image.dart';
 
-class MoviesListView extends StatefulWidget {
+class MoviesListView extends StatelessWidget {
   final Stream<List<MovieModel>> listStream;
   final int gridCount;
   final Axis direction;
+  final Function(MovieModel) onItemSelected;
 
-  MoviesListView({Key key, this.listStream, this.gridCount, this.direction})
+  MoviesListView(
+      {Key key,
+      this.listStream,
+      this.gridCount,
+      this.direction = Axis.vertical,
+      this.onItemSelected})
       : super(key: key);
 
   @override
-  _MoviesListViewState createState() => _MoviesListViewState();
-}
-
-class _MoviesListViewState extends State<MoviesListView> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        title: Text(Strings.app_name),
-        backgroundColor: primaryColor,
-        centerTitle: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
-        ),
-      ),
-      body: StreamBuilder<List<MovieModel>>(
-          stream: widget.listStream,
-          builder: (context, snapshot) {
-            return moviesListView(snapshot);
-          }),
+    print("moviesListView");
+
+    return StreamBuilder<List<MovieModel>>(
+        stream: listStream,
+        builder: (context, snapshot) {
+
+          if (snapshot.hasData) {
+            if (gridCount != null) {
+              return GridListView(movies: snapshot.data);
+            } else {
+              return _moviesListView(snapshot.data);
+            }
+          } else {
+            return _emptyListView();
+          }
+        });
+  }
+
+  Widget _emptyListView() {
+    return Center(
+      child: Text("Empty List Hang On :)",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: primaryColor, fontSize: 40)),
     );
   }
 
-  moviesListView(AsyncSnapshot<List<MovieModel>> snapshot) {
-    if (snapshot.hasData) {
-      Axis direction =
-          widget.direction is Axis ? widget.direction : Axis.vertical;
-      if (widget.gridCount != null) {
-        return GridListView();
-      }
-//    return getGrid(snapshot.data);
-      return ListView.separated(
-        scrollDirection: direction,
-        padding: const EdgeInsets.all(8),
-        itemCount: snapshot.data.length,
-        itemBuilder: (BuildContext context, int index) {
-          if (index == snapshot.data.length - 5) {
+  _moviesListView(List<MovieModel> movies) {
+    print('_moviesListView');
+    return ListView.separated(
+      scrollDirection: direction,
+      padding: const EdgeInsets.all(8),
+      itemCount: movies.length,
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+      itemBuilder: (BuildContext context, int index) {
+        if (index == movies.length - 5) {
 //          _loadMore();
-          }
-          MovieModel movieModel = snapshot.data[index];
-          return MovieCard(
-            movieModel: movieModel,
-            onTap: ()=> onItemClicked(movieModel),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      );
-    } else {
-      return Center(
-        child: Text("Empty List Hang On :)",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: primaryColor,
-                fontSize: 40)),
-      );
-    }
-  }
-
-  void onItemClicked(MovieModel movieModel) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MovieDetails(movieModel: movieModel, photoUrl: movieModel.getPosterDownloadUrl,)),
+        }
+        MovieModel movieModel = movies[index];
+        return MovieCard(
+          movieModel: movieModel,
+          onTap: ()=> onItemSelected(movieModel),
+        );
+      },
     );
   }
 }

@@ -7,17 +7,12 @@ import 'package:flutter_movie_db/src/data/movies/remote/MoviesRemoteDataSource.d
 import 'local/MoviesLocalDataSource.dart';
 
 class MoviesRepository implements RemoteMoviesDataSource, LocalMoviesDataSource{
-  MoviesRemoteDataSource _moviesRemoteDataSource = new MoviesRemoteDataSource(MoviesServiceApi());
+  MoviesRemoteDataSource _moviesRemoteDataSource = new MoviesRemoteDataSource();
   MoviesLocalDataSource _moviesLocalDataSource = new MoviesLocalDataSource();
 
   @override
   getLatestMovie() {
     return _moviesRemoteDataSource.getLatestMovie();
-  }
-
-  @override
-  getMovieReviewsByMovieId(int id) {
-    return _moviesRemoteDataSource.getMovieReviewsByMovieId(id);
   }
 
   @override
