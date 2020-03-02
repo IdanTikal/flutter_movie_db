@@ -9,6 +9,7 @@ class MoviesListView extends StatelessWidget {
   final int gridCount;
   final Axis direction;
   final Function(MovieModel) onItemSelected;
+  final ScrollController scrollController = new ScrollController();
 
   MoviesListView(
       {Key key,
@@ -25,7 +26,6 @@ class MoviesListView extends StatelessWidget {
     return StreamBuilder<List<MovieModel>>(
         stream: listStream,
         builder: (context, snapshot) {
-
           if (snapshot.hasData) {
             if (gridCount != null) {
               return GridListView(movies: snapshot.data);
@@ -49,19 +49,27 @@ class MoviesListView extends StatelessWidget {
 
   _moviesListView(List<MovieModel> movies) {
     print('_moviesListView');
-    return ListView.separated(
+    return ListView.builder(
+      controller: scrollController,
       scrollDirection: direction,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(18),
       itemCount: movies.length,
-      separatorBuilder: (BuildContext context, int index) => const Divider(),
+//      separatorBuilder: (BuildContext context, int index) =>
+//          direction == Axis.vertical
+//              ? const Divider(thickness: 0.001)
+//              : const VerticalDivider(
+//                  thickness: 0.001,
+//                ),
       itemBuilder: (BuildContext context, int index) {
         if (index == movies.length - 5) {
 //          _loadMore();
         }
         MovieModel movieModel = movies[index];
         return MovieCard(
+          scrollController: scrollController,
+          height: 300,
           movieModel: movieModel,
-          onTap: ()=> onItemSelected(movieModel),
+          onTap: () => onItemSelected(movieModel),
         );
       },
     );

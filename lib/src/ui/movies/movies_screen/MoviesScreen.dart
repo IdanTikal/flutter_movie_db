@@ -23,6 +23,7 @@ class MoviesScreen extends StatelessWidget {
         body: MoviesListView(
           listStream: _bloc.listObservable,
           onItemSelected: (movie) => onItemClicked(movie, context),
+          direction: Axis.vertical,
         ));
   }
 
