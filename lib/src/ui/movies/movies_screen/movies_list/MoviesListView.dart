@@ -10,13 +10,14 @@ class MoviesListView extends StatelessWidget {
   final Axis direction;
   final Function(MovieModel) onItemSelected;
   final ScrollController scrollController = new ScrollController();
+  final bool parallax;
 
   MoviesListView(
       {Key key,
       this.listStream,
       this.gridCount,
       this.direction = Axis.vertical,
-      this.onItemSelected})
+      this.onItemSelected, this.parallax = false})
       : super(key: key);
 
   @override
@@ -54,18 +55,14 @@ class MoviesListView extends StatelessWidget {
       scrollDirection: direction,
       padding: const EdgeInsets.all(18),
       itemCount: movies.length,
-//      separatorBuilder: (BuildContext context, int index) =>
-//          direction == Axis.vertical
-//              ? const Divider(thickness: 0.001)
-//              : const VerticalDivider(
-//                  thickness: 0.001,
-//                ),
       itemBuilder: (BuildContext context, int index) {
         if (index == movies.length - 5) {
 //          _loadMore();
         }
         MovieModel movieModel = movies[index];
         return MovieCard(
+          parallax: parallax,
+//          flipDirection: index % 2 != 0,
           scrollController: scrollController,
           height: 300,
           movieModel: movieModel,

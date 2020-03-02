@@ -51,7 +51,7 @@ class _MovieDetailsState extends State<MovieDetails> {
     return SliverAppBar(
         backgroundColor: Colors.black.withOpacity(0.8),
         expandedHeight: 250.0,
-//        floating: true,
+        floating: true,
         pinned: true,
 //        snap: true,
         flexibleSpace: FlexibleSpaceBar(
@@ -64,6 +64,7 @@ class _MovieDetailsState extends State<MovieDetails> {
             ),
           ),
           background: ImageHeroAnimation(
+            parallax: false,
             photo: widget.movieModel.getPosterDownloadUrl,
           ),
         ));

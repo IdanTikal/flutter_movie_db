@@ -21,6 +21,7 @@ class MoviesScreen extends StatelessWidget {
           ),
         ),
         body: MoviesListView(
+          parallax: false,
           listStream: _bloc.listObservable,
           onItemSelected: (movie) => onItemClicked(movie, context),
           direction: Axis.vertical,

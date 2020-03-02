@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/assets/Colors.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/ui/movies/widgets/ImageHeroAnimation.dart';
-import 'package:parallax_image/parallax_image.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class MovieCard extends StatelessWidget {
   final MovieModel movieModel;
@@ -10,8 +11,17 @@ class MovieCard extends StatelessWidget {
   final double height;
   final double width;
   final ScrollController scrollController;
+  final bool flipDirection;
+  final bool parallax;
 
-  MovieCard({Key key, this.movieModel, this.height, this.width, this.onTap, this.scrollController});
+  MovieCard(
+      {Key key,
+      this.movieModel,
+      this.height,
+      this.width,
+      this.onTap,
+      this.scrollController,
+      this.flipDirection = false, this.parallax = false});
 
   @override
   Widget build(BuildContext context) {
@@ -24,53 +34,65 @@ class MovieCard extends StatelessWidget {
       ),
       child: Stack(children: <Widget>[
         renderImage(),
-        Container(
-          height: height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-//              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[renderHeader(), renderFooter()]),
-        ),
+        _renderDetails(context),
       ]),
     );
   }
 
-  Widget renderHeader() {
+  Container _renderDetails(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Container(
-      color: Colors.black12.withOpacity(0.8),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(movieModel.title,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            maxLines: 1,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 25)),
-        subtitle: Text(movieModel.releaseDate,
-            textAlign: TextAlign.center,
-            style:
-                TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 20)),
-      ),
+        height: height,
+        width: width,
+        child: Column(
+//              crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              listTileContainer(width, renderHeader()),
+              listTileContainer(width, renderFooter())
+            ]),
+      );
+  }
+
+  Widget listTileContainer(double width, Widget tile) {
+    return Container(
+      width: width,
+      color: Colors.black12.withOpacity(0.5),
+      child: tile,
     );
   }
 
   Widget renderFooter() {
-    return Container(
-      color: Colors.black12.withOpacity(0.8),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(movieModel.title,
-            overflow: TextOverflow.ellipsis,
-            softWrap: true,
-            maxLines: 1,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 20)),
-        subtitle: Text(movieModel.releaseDate,
-            textAlign: TextAlign.center,
-            style:
-                TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 16)),
+    print(movieModel.voteAverage);
+    return Center(
+      child: RatingBar(
+        itemSize: 50,
+        initialRating: movieModel.voteAverage / 2,
+        direction: Axis.horizontal,
+        allowHalfRating: true,
+        itemCount: 5,
+        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+        itemBuilder: (context, _) => Image.asset(
+          "lib/assets/mdb.png",
+          color: primaryColor,
+        ),
+        onRatingUpdate: null,
       ),
+    );
+  }
+
+  Widget renderHeader() {
+    return ListTile(
+      onTap: onTap,
+      title: Text(movieModel.title,
+          overflow: TextOverflow.ellipsis,
+          softWrap: true,
+          maxLines: 1,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white, fontSize: 20)),
+      subtitle: Text(movieModel.releaseDate,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 16)),
     );
   }
 
@@ -79,24 +101,10 @@ class MovieCard extends StatelessWidget {
         height: height,
         width: double.infinity,
         child: ImageHeroAnimation(
+          flipDirection: flipDirection,
           scrollController: scrollController,
-          parallax: true,
+          parallax: parallax,
           photo: movieModel.getPosterDownloadUrl,
-        )
-//        ParallaxImage(
-//          image: CachedNetworkImageProvider(movieModel.getPosterDownloadUrl),
-//          extent: 10,
-//        )
-    );
-//      child: ParallaxImage(
-//          extent: 1,
-//          image: CachedNetworkImageProvider(
-//            movieModel.getPosterDownloadUrl,
-//          )),
-//    );
-////          child: ImageHeroAnimation(
-////            photo: movieModel.getPosterDownloadUrl,
-////          ),
-//        ));
+        ));
   }
 }

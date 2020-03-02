@@ -29,7 +29,8 @@ dependencies:
   dio_http_cache: ^0.2.5
   dio: ^3.0.8
   cached_network_image: ^2.0.0
-  parallax_image: ^0.3.1+1
+  flutter_parallax: ^0.1.2
+  flutter_rating_bar: ^3.0.1+1
   #endregion
 
   #region LOCAL DATABASE (MOOR)
@@ -70,6 +71,7 @@ flutter:
 
   assets:
     - lib/assets/strings/
+    - lib/assets/mdb.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
