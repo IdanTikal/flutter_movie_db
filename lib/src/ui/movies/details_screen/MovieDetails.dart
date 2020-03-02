@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_db/assets/Colors.dart';
 import 'package:flutter_movie_db/src/data/movies/MovieModel.dart';
 import 'package:flutter_movie_db/src/data/videos/VideoModel.dart';
 import 'package:flutter_movie_db/src/data/videos/VideosRepository.dart';
@@ -34,40 +35,123 @@ class _MovieDetailsState extends State<MovieDetails> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                backgroundColor: primaryColor,
+                expandedHeight: 200.0,
+                floating: true,
+                pinned: true,
+                stretch: true,
+                flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Text(widget.movieModel.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        )),
+                    background: ImageHeroAnimation(
+                      parallax: false,
+                      photo: widget.movieModel.getPosterDownloadUrl,
+                    )),
+              ),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _SliverAppBarDelegate(
+                  TabBar(
+                    indicatorColor: primaryColor,
+                    labelColor: primaryColor,
+                    unselectedLabelColor: Colors.grey,
+                    labelStyle: TextStyle(fontSize: 16),
+                    tabs: [
+                      Tab(
+                          icon: Icon(
+                            Icons.info,
+                          ),
+                          text: "Info"),
+                      Tab(
+                          icon: Icon(
+                            Icons.comment,
+                          ),
+                          text: "Comments"),
+                      Tab(
+                          icon: Icon(Icons.ondemand_video,
+                          ),
+                          text: "Videos"),
+                    ],
+                  ),
+                ),
+              ),
+            ];
+          }, body: TabBarView(
+          children: <Widget>[
+//            MovieOverview(),
+//            MovieComments(),
+//            MovieVideos(),
+
+          ],
+        ),
+
+          ),
+        ),
+    );
+  }
+
+/*
+  @override
+  Widget build(BuildContext context) {
     MovieDetailsBloc();
     return WillPopScope(
       onWillPop: () => widgetWillPop(),
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: CustomScrollView(slivers: <Widget>[
-          buildSliverAppBar(),
-          buildSliverFillRemaining(),
-        ]),
+        body: DefaultTabController(
+          child: CustomScrollView(slivers: <Widget>[
+            buildSliverAppBar(),
+            buildSliverFillRemaining(),
+          ]), length: 2,
+        ),
       ),
     );
   }
+*/
 
   SliverAppBar buildSliverAppBar() {
     return SliverAppBar(
-        backgroundColor: Colors.black.withOpacity(0.8),
-        expandedHeight: 250.0,
-        floating: true,
-        pinned: true,
-//        snap: true,
-        flexibleSpace: FlexibleSpaceBar(
-          collapseMode: CollapseMode.parallax,
-          title: Text(
-            widget.movieModel.title,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: Colors.white,
-            ),
+      backgroundColor: Colors.black.withOpacity(0.8),
+      expandedHeight: 250.0,
+      floating: true,
+      pinned: true,
+      snap: true,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.parallax,
+        title: Text(
+          widget.movieModel.title,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: Colors.white,
           ),
-          background: ImageHeroAnimation(
-            parallax: false,
-            photo: widget.movieModel.getPosterDownloadUrl,
-          ),
-        ));
+        ),
+        background: ImageHeroAnimation(
+          parallax: false,
+          photo: widget.movieModel.getPosterDownloadUrl,
+        ),
+      ),
+      bottom: TabBar(
+        labelStyle: TextStyle(fontSize: 25),
+        isScrollable: true,
+        labelColor: Colors.black87,
+        unselectedLabelColor: Colors.grey,
+        tabs: [
+          new Tab(icon: new Icon(Icons.info), text: "Tab 1"),
+          new Tab(icon: new Icon(Icons.lightbulb_outline), text: "Tab 2"),
+        ],
+      ),
+    );
   }
 
   Widget buildSliverFillRemaining() {
@@ -86,10 +170,12 @@ class _MovieDetailsState extends State<MovieDetails> {
         buildSectionHeader("Overview"),
         buildSectionBody(
           widget.movieModel.overview,
-        ),            buildSectionHeader("Overview"),
+        ),
+        buildSectionHeader("Overview"),
         buildSectionBody(
           widget.movieModel.overview,
-        ),            buildSectionHeader("Overview"),
+        ),
+        buildSectionHeader("Overview"),
         buildSectionBody(
           widget.movieModel.overview,
         ),
@@ -128,5 +214,31 @@ class _MovieDetailsState extends State<MovieDetails> {
   widgetWillPop() {
     print("XXX: WillPopScope");
     return Future.value(true);
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate(this._tabBar);
+
+  final TabBar _tabBar;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new Container(
+      color: Colors.white,
+      child: _tabBar,
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return false;
   }
 }

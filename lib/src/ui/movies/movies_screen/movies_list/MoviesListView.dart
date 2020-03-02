@@ -28,10 +28,10 @@ class MoviesListView extends StatelessWidget {
         stream: listStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (gridCount != null) {
-              return GridListView(movies: snapshot.data);
+            if (gridCount != null && gridCount > 1) {
+              return GridListView(movies: snapshot.data, onTap: (s)=> onItemSelected(s), gridCount: gridCount);
             } else {
-              return _moviesListView(snapshot.data);
+              return _moviesListView(snapshot.data, onTap: (s)=> onItemSelected(s));
             }
           } else {
             return _emptyListView();
@@ -48,7 +48,7 @@ class MoviesListView extends StatelessWidget {
     );
   }
 
-  _moviesListView(List<MovieModel> movies) {
+  _moviesListView(List<MovieModel> movies, {Function(MovieModel movieModel) onTap}) {
     print('_moviesListView');
     return ListView.builder(
       controller: scrollController,
@@ -64,9 +64,9 @@ class MoviesListView extends StatelessWidget {
           parallax: parallax,
 //          flipDirection: index % 2 != 0,
           scrollController: scrollController,
-          height: 300,
+//          height: 200,
           movieModel: movieModel,
-          onTap: () => onItemSelected(movieModel),
+          onTap: () => onTap(movieModel),
         );
       },
     );

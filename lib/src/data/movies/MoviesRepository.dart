@@ -21,13 +21,15 @@ class MoviesRepository implements RemoteMoviesDataSource, LocalMoviesDataSource{
 
   @override
   Future<List<MovieModel>> getPopularMovies() async{
+    print((await _moviesRemoteDataSource.getPopularMovies()).results);
+
     return (await _moviesRemoteDataSource.getPopularMovies()).results;
   }
 
   @override
   getSimilarMoviesByMovieId(int id) async{
     var movies = await _moviesRemoteDataSource.getSimilarMoviesByMovieId(id);
-    print(movies);
+//    print(movies);
     return movies;
   }
 

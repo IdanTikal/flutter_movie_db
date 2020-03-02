@@ -9,6 +9,7 @@ class ImageHeroAnimation extends StatelessWidget {
   final bool parallax;
   final bool flipDirection;
   final ScrollController scrollController;
+  final BoxFit fit;
 
   ImageHeroAnimation(
       {Key key,
@@ -17,7 +18,7 @@ class ImageHeroAnimation extends StatelessWidget {
       this.height,
       this.parallax = false,
       this.flipDirection = false,
-      this.scrollController,
+      this.scrollController, this.fit = BoxFit.fill,
       })
       : super(key: key);
 
@@ -54,6 +55,6 @@ class ImageHeroAnimation extends StatelessWidget {
   }
 
   CachedNetworkImage _getImage() {
-    return CachedNetworkImage(imageUrl: photo, fit: BoxFit.fill);
+    return CachedNetworkImage(imageUrl: photo, fit: fit, width: width, height: height,);
   }
 }

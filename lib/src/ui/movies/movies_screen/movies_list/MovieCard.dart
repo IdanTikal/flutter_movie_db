@@ -25,21 +25,24 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.black,
-      clipBehavior: Clip.antiAlias,
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50),
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        color: Colors.black,
+        clipBehavior: Clip.antiAlias,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Stack(children: <Widget>[
+          renderImage(),
+          _renderDetails(context),
+        ]),
       ),
-      child: Stack(children: <Widget>[
-        renderImage(),
-        _renderDetails(context),
-      ]),
     );
   }
 
-  Container _renderDetails(BuildContext context) {
+  Widget _renderDetails(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Container(
         height: height,
@@ -63,7 +66,6 @@ class MovieCard extends StatelessWidget {
   }
 
   Widget renderFooter() {
-    print(movieModel.voteAverage);
     return Center(
       child: RatingBar(
         itemSize: 50,
@@ -76,14 +78,13 @@ class MovieCard extends StatelessWidget {
           "lib/assets/mdb.png",
           color: primaryColor,
         ),
-        onRatingUpdate: null,
+        onRatingUpdate: null ,
       ),
     );
   }
 
   Widget renderHeader() {
     return ListTile(
-      onTap: onTap,
       title: Text(movieModel.title,
           overflow: TextOverflow.ellipsis,
           softWrap: true,
