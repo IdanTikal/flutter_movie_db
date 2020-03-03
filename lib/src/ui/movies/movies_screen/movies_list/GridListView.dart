@@ -13,6 +13,7 @@ class GridListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
           return GridView(
+            addAutomaticKeepAlives: true,
             padding: EdgeInsets.all(5),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: gridCount,
@@ -20,7 +21,7 @@ class GridListView extends StatelessWidget {
               mainAxisSpacing: 1,
               childAspectRatio: 0.5,
             ),
-            children: movies.map((movieModel) => MovieCard(movieModel: movieModel, onTap: ()=> onTap(movieModel))).toList(),
+            children: movies.map((movieModel) => MovieCard(movieModel: movieModel, onTap: ()=> onTap(movieModel), gridCount: gridCount)).toList(),
           );
   }
 }

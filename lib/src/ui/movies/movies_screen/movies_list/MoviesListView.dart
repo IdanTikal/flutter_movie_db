@@ -64,7 +64,7 @@ class MoviesListView extends StatelessWidget {
           parallax: parallax,
 //          flipDirection: index % 2 != 0,
           scrollController: scrollController,
-//          height: 200,
+          height: 250,
           movieModel: movieModel,
           onTap: () => onTap(movieModel),
         );

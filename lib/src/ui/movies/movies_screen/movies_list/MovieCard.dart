@@ -13,6 +13,7 @@ class MovieCard extends StatelessWidget {
   final ScrollController scrollController;
   final bool flipDirection;
   final bool parallax;
+  final int gridCount;
 
   MovieCard(
       {Key key,
@@ -21,10 +22,14 @@ class MovieCard extends StatelessWidget {
       this.width,
       this.onTap,
       this.scrollController,
-      this.flipDirection = false, this.parallax = false});
+      this.flipDirection = false,
+      this.parallax = false,
+      this.gridCount});
 
   @override
   Widget build(BuildContext context) {
+    bool p = gridCount != null && gridCount > 1 ? false : parallax;
+
     return InkWell(
       onTap: onTap,
       child: Card(
@@ -36,7 +41,7 @@ class MovieCard extends StatelessWidget {
         ),
         child: Stack(children: <Widget>[
           renderImage(),
-          _renderDetails(context),
+          true ? _renderDetails(context) : Container(),
         ]),
       ),
     );
@@ -45,16 +50,16 @@ class MovieCard extends StatelessWidget {
   Widget _renderDetails(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Container(
-        height: height,
-        width: width,
-        child: Column(
+      height: height,
+      width: width,
+      child: Column(
 //              crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              listTileContainer(width, renderHeader()),
-              listTileContainer(width, renderFooter())
-            ]),
-      );
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            listTileContainer(width, renderHeader()),
+            listTileContainer(width, renderFooter())
+          ]),
+    );
   }
 
   Widget listTileContainer(double width, Widget tile) {
@@ -66,9 +71,13 @@ class MovieCard extends StatelessWidget {
   }
 
   Widget renderFooter() {
+    double ratingItemSize = 60.0;
+    switch (gridCount) {
+      case 1:
+    }
     return Center(
       child: RatingBar(
-        itemSize: 50,
+        itemSize: ratingItemSize,
         initialRating: movieModel.voteAverage / 2,
         direction: Axis.horizontal,
         allowHalfRating: true,
@@ -78,7 +87,7 @@ class MovieCard extends StatelessWidget {
           "lib/assets/mdb.png",
           color: primaryColor,
         ),
-        onRatingUpdate: null ,
+        onRatingUpdate: null,
       ),
     );
   }
@@ -98,6 +107,8 @@ class MovieCard extends StatelessWidget {
   }
 
   Widget renderImage() {
+    bool parallax = gridCount != null && gridCount > 1 ? false : this.parallax;
+
     return Container(
         height: height,
         width: double.infinity,
