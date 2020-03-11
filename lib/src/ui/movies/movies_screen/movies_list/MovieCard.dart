@@ -24,7 +24,7 @@ class MovieCard extends StatelessWidget {
       this.scrollController,
       this.flipDirection = false,
       this.parallax = false,
-      this.gridCount});
+      this.gridCount = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -41,48 +41,52 @@ class MovieCard extends StatelessWidget {
         ),
         child: Stack(children: <Widget>[
           renderImage(),
-          true ? _renderDetails(context) : Container(),
+//          true ? _renderDetails(context) : Container(),
+          gridCount < 4 ? Positioned(
+            child: _infoContainer(renderHeader()),
+            top: 0,
+            left: 0,
+            right: 0,
+          ) : Container(),
+          gridCount < 4 ? FutureBuilder(
+            builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+              if (!snapshot.hasData){
+                return Container();
+              }
+              double width = snapshot.data;
+              return Positioned(
+                child: _infoContainer(renderFooter(width)),
+                bottom: 0,
+                left: 0,
+                right: 0,
+              );
+            },
+            future: Future.delayed(Duration(microseconds: 1), ()=> context.size.width),
+          ) : Container()
         ]),
       ),
     );
   }
 
-  Widget _renderDetails(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+  Widget _infoContainer(Widget tile) {
     return Container(
-      height: height,
-      width: width,
-      child: Column(
-//              crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            listTileContainer(width, renderHeader()),
-            listTileContainer(width, renderFooter())
-          ]),
-    );
-  }
-
-  Widget listTileContainer(double width, Widget tile) {
-    return Container(
-      width: width,
       color: Colors.black12.withOpacity(0.5),
       child: tile,
     );
   }
 
-  Widget renderFooter() {
-    double ratingItemSize = 60.0;
-    switch (gridCount) {
-      case 1:
-    }
+  Widget renderFooter(double width) {
+    int itemCount = 5;
+    double ratingItemSize = (width ~/ (itemCount+1)).toInt().toDouble();
+    ratingItemSize = gridCount >= 2 ? ratingItemSize * 2 : ratingItemSize;
     return Center(
       child: RatingBar(
         itemSize: ratingItemSize,
         initialRating: movieModel.voteAverage / 2,
         direction: Axis.horizontal,
         allowHalfRating: true,
-        itemCount: 5,
-        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+        itemCount: itemCount,
+        itemPadding: EdgeInsets.symmetric(horizontal:                                                                                                        4.0),
         itemBuilder: (context, _) => Image.asset(
           "lib/assets/mdb.png",
           color: primaryColor,
