@@ -13,6 +13,7 @@ class MoviesScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
+          actions: renderAppBarActions(_bloc),
           title: Text(Strings.app_name),
           backgroundColor: primaryColor,
           centerTitle: true,
@@ -20,13 +21,50 @@ class MoviesScreen extends StatelessWidget {
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
           ),
         ),
-        body: MoviesListView(
-          gridCount: 2,
-          parallax: true,
-          listStream: _bloc.listObservable,
-          onItemSelected: (movie) => onItemClicked(movie, context),
-          direction: Axis.vertical,
+        body: StreamBuilder(
+          initialData: 1,
+          stream: _bloc.listItemCountObservable,
+          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+            return MoviesListView(
+              gridCount: snapshot.data,
+              parallax: true,
+              listStream: _bloc.listObservable,
+              onItemSelected: (movie) => onItemClicked(movie, context),
+              direction: Axis.vertical,
+            );
+          },
         ));
+  }
+
+  List<Widget> renderAppBarActions(MoviesBloc bloc) {
+    return <Widget>[
+      // action button
+      IconButton(
+        icon: Icon(Icons.grid_on),
+        onPressed: () {
+          bloc.changeListItemCount();
+        },
+      ),
+      // action button
+/*      IconButton(
+        icon: Icon(choices[1].icon),
+        onPressed: () {
+          _select(choices[1]);
+        },
+      ),*/
+      // overflow menu
+/*      PopupMenuButton<Choice>(
+        onSelected: _select,
+        itemBuilder: (BuildContext context) {
+          return choices.skip(2).map((Choice choice) {
+            return PopupMenuItem<Choice>(
+              value: choice,
+              child: Text(choice.title),
+            );
+          }).toList();
+        },
+      ),*/
+    ];
   }
 
   void onItemClicked(MovieModel movieModel, BuildContext context) {

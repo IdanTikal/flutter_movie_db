@@ -4,23 +4,33 @@ import 'package:rxdart/rxdart.dart';
 
 class MoviesBloc{
   final MoviesRepository _moviesRepo = MoviesRepository();
-  BehaviorSubject<List<MovieModel>> _listSubject = new BehaviorSubject();
+  final BehaviorSubject<List<MovieModel>> _listSubject = new BehaviorSubject();
   Stream<List<MovieModel>> get listObservable => _listSubject.stream;
 
-  MoviesBloc(){
-    loadMore();
+  final BehaviorSubject<int> _listItemCount = new BehaviorSubject.seeded(1);
+  Stream<int> get listItemCountObservable => _listItemCount.stream;
 
-    listObservable.listen((list){
-      print("XXX");
-    });
-//    _listSubject.listen(())
+  MoviesBloc(){
+    loadMoreMovies();
+//    changeListItemCount();
+  }
+
+  changeListItemCount() async {
+    print("changeListItemCount");
+    int count = await _listItemCount.first;
+    count++;
+    print("ITEM COUNT: $count");
+    if (count > 6){
+      count = 1;
+    }
+    _listItemCount.sink.add(count);
   }
 
   dispose(){
     _listSubject.close();
   }
 
-  loadMore({page: 1}) async {
+  loadMoreMovies({page: 1}) async {
     print("loadMore");
     List<MovieModel> list = await _moviesRepo.getPopularMovies();
     _listSubject.sink.add(list);
@@ -29,4 +39,6 @@ class MoviesBloc{
 //    } else {
 //    }
   }
+
+  changeList() {}
 }
